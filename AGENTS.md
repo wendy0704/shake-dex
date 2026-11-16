@@ -25,6 +25,7 @@
 | 外部資源 | 只允許 Google Fonts 的 `Noto Sans TC`；不得引入其他 CDN 或 npm 套件 |
 | 本機預覽 | 因為頁面用 `fetch()` 讀 JSON，必須透過本機伺服器開啟：`python3 -m http.server 8000`，再開 `http://localhost:8000` |
 | 驗證 | `node scripts/validate.mjs`（只用 Node 內建模組，不需要 `npm install`） |
+| 快取版本號 | 4 個 HTML 引用 CSS／JS 時都帶 `?v=YYYYMMDD`。**只要修改 `style.css`、`core.js` 或 `pages.js`，就必須把 4 個 HTML 的版本號全部改成當天日期**，否則瀏覽器會繼續用舊檔，新的 HTML 搭配舊的 CSS 會讓版面壞掉 |
 
 ---
 
@@ -285,6 +286,7 @@
 - [ ] 新增的內容只動到 `data/`（除非任務本身是改版面）
 - [ ] 首頁的總數、篩選結果有反映新資料
 - [ ] 新飲品的 `drink.html?id=...` 和所屬店家的 `shop.html?id=...` 都能正常顯示
+- [ ] 有改 CSS 或 JS 的話，4 個 HTML 的 `?v=` 版本號都已更新
 - [ ] 沒有違反 §10 任何一條
 - [ ] 回覆中附上建議的 commit 訊息，格式：`feat(drink): 新增 {店家} {品名}` 或 `feat(shop): 新增 {店家}`
 
