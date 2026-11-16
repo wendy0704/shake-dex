@@ -1,6 +1,7 @@
 [
   {
     "id": "kebuke",
+    "logo": "assets/logos/kebuke.png",
     "name": "可不可熟成紅茶",
     "emoji": "🍂",
     "color": "#9a5b34",
@@ -8,6 +9,7 @@
   },
   {
     "id": "50lan",
+    "logo": "assets/logos/50lan.png",
     "name": "五十嵐",
     "emoji": "🧋",
     "color": "#2f6db5",
@@ -15,6 +17,7 @@
   },
   {
     "id": "milksha",
+    "logo": "assets/logos/milksha.png",
     "name": "迷客夏",
     "emoji": "🐄",
     "color": "#4f8a3c",
@@ -22,6 +25,7 @@
   },
   {
     "id": "chingshin",
+    "logo": "assets/logos/chingshin.png",
     "name": "清心福全",
     "emoji": "🍵",
     "color": "#d0412f",

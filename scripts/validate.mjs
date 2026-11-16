@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
@@ -26,14 +26,15 @@ const SHOP_ID = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 const DRINK_KEYS = ["id", "shopId", "name", "category", "price", "sugar", "ice", "toppings", "liquidColor", "scores", "rebuy", "comment", "date"];
 const SHOP_KEYS = ["id", "name", "emoji", "color", "intro"];
+const SHOP_OPTIONAL = ["logo"];
 const FORBIDDEN = ["total", "avg", "average", "dexNo", "count", "rebuyRate"];
 const dimKeys = options.dimensions.map((d) => d.key);
 const len = (s) => [...s].length;
 
-function checkKeys(obj, allowed, where) {
+function checkKeys(obj, allowed, where, optional = []) {
   for (const k of Object.keys(obj)) {
     if (FORBIDDEN.includes(k)) errors.push(`${where}：不可儲存計算值欄位「${k}」（AGENTS.md §4）`);
-    else if (!allowed.includes(k)) errors.push(`${where}：未知欄位「${k}」`);
+    else if (!allowed.includes(k) && !optional.includes(k)) errors.push(`${where}：未知欄位「${k}」`);
   }
   for (const k of allowed) if (!(k in obj)) errors.push(`${where}：缺少欄位「${k}」`);
 }
@@ -41,7 +42,12 @@ function checkKeys(obj, allowed, where) {
 const shopIds = new Set();
 shops.forEach((s, i) => {
   const where = `shops[${i}]（${s.id ?? "無 id"}）`;
-  checkKeys(s, SHOP_KEYS, where);
+  checkKeys(s, SHOP_KEYS, where, SHOP_OPTIONAL);
+  if ("logo" in s) {
+    const pattern = new RegExp(`^assets/logos/${s.id}\\.(png|jpg|jpeg|webp|svg)$`);
+    if (!pattern.test(s.logo ?? "")) errors.push(`${where}：logo 路徑必須是 assets/logos/${s.id}.png（或 .jpg／.webp／.svg）`);
+    else if (!existsSync(join(root, s.logo))) warnings.push(`${where}：找不到 ${s.logo}，網站會暫時改用 emoji 顯示`);
+  }
   if (!SHOP_ID.test(s.id ?? "")) errors.push(`${where}：id 必須是小寫英數與 -`);
   if (shopIds.has(s.id)) errors.push(`${where}：id 重複`);
   shopIds.add(s.id);

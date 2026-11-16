@@ -1,6 +1,7 @@
 {
   "id": "小寫英數縮寫",
   "name": "店家正式中文名稱",
+  "logo": "assets/logos/{id}.png",
   "emoji": "🧋",
   "color": "#RRGGBB",
   "intro": "60 字以內的客觀簡介"

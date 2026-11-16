@@ -178,9 +178,16 @@ const ShakeDex = (() => {
     return `<svg class="radar" viewBox="0 0 300 230" role="img" aria-label="四項評分雷達圖">${grid}${axes}<polygon class="radar-shape" points="${shape}"/>${dots}${labels}</svg>`;
   }
 
+  function shopIcon(shop, size = "md") {
+    if (!shop) return "";
+    const emoji = esc(shop.emoji);
+    if (!shop.logo) return `<span class="shop-icon shop-icon--${size} is-emoji">${emoji}</span>`;
+    return `<span class="shop-icon shop-icon--${size}" data-emoji="${emoji}"><img src="${esc(shop.logo)}" alt="${esc(shop.name)} logo" loading="lazy"></span>`;
+  }
+
   function shopBadge(shop) {
     if (!shop) return "";
-    return `<a class="shop-badge" href="shop.html?id=${encodeURIComponent(shop.id)}" data-shop-color="${esc(shop.color)}">${esc(shop.emoji)} ${esc(shop.name)}</a>`;
+    return `<a class="shop-badge" href="shop.html?id=${encodeURIComponent(shop.id)}" data-shop-color="${esc(shop.color)}">${shopIcon(shop, "sm")}${esc(shop.name)}</a>`;
   }
 
   function drinkCardHTML(d) {
@@ -204,9 +211,27 @@ const ShakeDex = (() => {
     });
   }
 
+  function useEmojiFallback(img) {
+    const box = img.parentElement;
+    box.classList.add("is-emoji");
+    box.textContent = box.dataset.emoji;
+  }
+
+  function bindLogoFallback(root = document) {
+    root.querySelectorAll(".shop-icon img").forEach((img) => {
+      if (img.complete && img.naturalWidth === 0) useEmojiFallback(img);
+      else img.addEventListener("error", () => useEmojiFallback(img), { once: true });
+    });
+  }
+
+  function enhance(root = document) {
+    applyShopColors(root);
+    bindLogoFallback(root);
+  }
+
   function showError(container, message) {
     container.innerHTML = `<div class="empty"><p class="empty__emoji">🫗</p><p>${esc(message)}</p><a class="btn" href="index.html">回圖鑑首頁</a></div>`;
   }
 
-  return { loadAll, esc, dexNo, score1, param, starsHTML, cupSVG, radarSVG, shopBadge, drinkCardHTML, applyShopColors, showError, TOPPING_STYLES };
+  return { loadAll, esc, dexNo, score1, param, starsHTML, cupSVG, radarSVG, shopIcon, shopBadge, drinkCardHTML, enhance, showError, TOPPING_STYLES };
 })();

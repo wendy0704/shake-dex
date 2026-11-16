@@ -1,5 +1,5 @@
 (() => {
-  const { loadAll, esc, dexNo, score1, param, starsHTML, cupSVG, radarSVG, shopBadge, drinkCardHTML, applyShopColors, showError } = ShakeDex;
+  const { loadAll, esc, dexNo, score1, param, starsHTML, cupSVG, radarSVG, shopIcon, shopBadge, drinkCardHTML, enhance, showError } = ShakeDex;
 
   const SORTS = {
     newest: { label: "最新喝的", fn: (a, b) => b.dexNo - a.dexNo },
@@ -55,7 +55,7 @@
   <div class="shop-list">
     ${shops.map((s) => `
     <a class="shop-tile" href="shop.html?id=${encodeURIComponent(s.id)}" data-shop-color="${esc(s.color)}">
-      <span class="shop-tile__emoji">${esc(s.emoji)}</span>
+      ${shopIcon(s, "md")}
       <span class="shop-tile__name">${esc(s.name)}</span>
       <span class="shop-tile__meta">${s.count} 杯 · 平均 ${score1(s.avg)}</span>
     </a>`).join("")}
@@ -76,7 +76,7 @@
       grid.innerHTML = list.length
         ? list.map(drinkCardHTML).join("")
         : `<div class="empty"><p class="empty__emoji">🧊</p><p>沒有符合條件的飲料</p></div>`;
-      applyShopColors(grid);
+      enhance(grid);
     }
 
     main.querySelector(".controls__search").addEventListener("input", (e) => { state.q = e.target.value; update(); });
@@ -87,7 +87,7 @@
       state.category = btn.dataset.category;
       update();
     }));
-    applyShopColors(main);
+    enhance(main);
     update();
   }
 
@@ -99,7 +99,7 @@
     const ranked = [...shop.drinks].sort((a, b) => b.total - a.total);
     main.innerHTML = `
 <section class="shop-hero" data-shop-color="${esc(shop.color)}">
-  <span class="shop-hero__emoji">${esc(shop.emoji)}</span>
+  ${shopIcon(shop, "lg")}
   <div>
     <h1 class="shop-hero__name">${esc(shop.name)}</h1>
     <p class="shop-hero__intro">${esc(shop.intro)}</p>
@@ -116,12 +116,12 @@
 <div class="shop-list">
   ${shops.filter((s) => s.id !== shop.id).map((s) => `
   <a class="shop-tile" href="shop.html?id=${encodeURIComponent(s.id)}" data-shop-color="${esc(s.color)}">
-    <span class="shop-tile__emoji">${esc(s.emoji)}</span>
+    ${shopIcon(s, "md")}
     <span class="shop-tile__name">${esc(s.name)}</span>
     <span class="shop-tile__meta">${s.count} 杯 · 平均 ${score1(s.avg)}</span>
   </a>`).join("")}
 </div>`;
-    applyShopColors(main);
+    enhance(main);
   }
 
   async function renderDrinkPage(main) {
@@ -162,7 +162,7 @@
   ${prev ? `<a class="pager__link" href="drink.html?id=${encodeURIComponent(prev.id)}">← ${dexNo(prev.dexNo)} ${esc(prev.name)}</a>` : "<span></span>"}
   ${next ? `<a class="pager__link pager__link--next" href="drink.html?id=${encodeURIComponent(next.id)}">${dexNo(next.dexNo)} ${esc(next.name)} →</a>` : "<span></span>"}
 </nav>`;
-    applyShopColors(main);
+    enhance(main);
   }
 
   async function renderAboutPage(main) {
@@ -203,7 +203,7 @@
     </ul>
   </div>` : ""}
 </section>`;
-    applyShopColors(main);
+    enhance(main);
   }
 
   const PAGES = {
