@@ -103,5 +103,20 @@
     "rebuy": false,
     "comment": "便宜大碗的解渴茶，沒有驚喜。",
     "date": "2026-11-10"
+  },
+  {
+    "id": "milksha-zhenzhu-dazheng-latte",
+    "shopId": "milksha",
+    "name": "珍珠大正紅茶拿鐵",
+    "category": "鮮奶茶",
+    "price": 70,
+    "sugar": "微糖",
+    "ice": "去冰",
+    "toppings": ["珍珠"],
+    "liquidColor": "#d2a77f",
+    "scores": { "flavor": 5, "balance": 4, "texture": 5, "value": 3 },
+    "rebuy": true,
+    "comment": "珍珠Q彈有黑糖香，和紅茶拿鐵很搭。",
+    "date": "2026-11-17"
   }
 ]
